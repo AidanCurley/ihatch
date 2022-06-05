@@ -2,3 +2,6 @@
 
 # ihatch
 An IoT connected thermometer/hygometer for use in hobbyist egg incubators
+
+## License
+Licensed under the [MIT License](LICENSE).
