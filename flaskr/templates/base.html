@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="/static/favicon.ico" rel="icon">
+        <link href="/static/style.css" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        {% if get_flashed_messages(with_categories=true) %}
+            <header>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                     {% for category, message in messages %}
+                          <div class="alert border text-center {{ category }}" id="hideMe" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endwith %}
+            </header>
+        {% endif %}
+
+        <main class="container p-5">
+              {% block content %}{% endblock %}
+        </main>
+
+    </body>
+</html>
