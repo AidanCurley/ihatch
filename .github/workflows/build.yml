@@ -26,8 +26,9 @@ jobs:
 
       - name: Run pytest
         run: |
-          coverage run -m pytest
-          coverage report -m
+          coverage erase
+          coverage run -m pytest --source=flaskr
+          coverage xml -i
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
