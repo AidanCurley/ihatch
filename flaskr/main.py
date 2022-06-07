@@ -1,3 +1,4 @@
+"""Launch the application"""
 from flask import Flask
 from flask import render_template
 from flask_wtf.csrf import CSRFProtect
@@ -8,7 +9,8 @@ csrf.init_app(app)
 
 
 @app.route('/')
-def hello_world():  # put application's code here
+def landing_page():
+    """Controller for the landing page route"""
     return render_template('index.html')
 
 
