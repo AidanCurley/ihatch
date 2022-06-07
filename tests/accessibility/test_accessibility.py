@@ -13,7 +13,7 @@ chrome_options.add_argument("--proxy-bypass-list=*")
 
 def test_landing_page_accessibility():
     """Tests the accessibility of the landing page"""
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get("http://www.ihatch.uk")
 
     axe = Axe(driver)
