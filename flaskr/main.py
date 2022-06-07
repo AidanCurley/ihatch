@@ -11,7 +11,7 @@ csrf.init_app(app)
 @app.route('/')
 def landing_page():
     """Controller for the landing page route"""
-    return render_template('index.html')
+    return render_template('landing.html')
 
 
 if __name__ == '__main__':
