@@ -56,6 +56,12 @@ def step_impl(context):
     context.browser.get('http://www.ihatch.uk/')
 
 
+@when('she clicks logout')
+def step_impl(context):
+    logout_button = context.browser.find_element_by_id('logout')
+    logout_button.click()
+
+
 @then('she should be logged in and redirected to the main dashboard')
 def step_impl(context):
     assert context.browser.current_url == 'http://www.ihatch.uk//dashboard'
