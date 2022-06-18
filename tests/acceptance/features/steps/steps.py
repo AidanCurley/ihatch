@@ -62,6 +62,12 @@ def step_impl(context):
     context.browser.find_element_by_link_text('Register').click()
 
 
+@when('she clicks I have forgotten my password')
+def step_impl(context):
+    password_button = context.browser.find_element_by_id('forgot_password')
+    password_button.click()
+
+
 @when('she enters her details and clicks the \'Register\' button')
 def step_impl(context):
     username = context.browser.find_element_by_id('username')
@@ -123,3 +129,8 @@ def step_impl(context):
 @then('a \'username exists\' error should be displayed')
 def step_impl(context):
     assert 'There is already an account associated with this username.' in context.browser.page_source
+
+
+@then('she will be sent a password reminder')
+def step_impl(context):
+    pass
