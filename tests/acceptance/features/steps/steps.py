@@ -107,7 +107,7 @@ def step_impl(context):
 
 @then('she should be logged in and redirected to the main dashboard')
 def step_impl(context):
-    assert context.browser.current_url == 'http://www.ihatch.uk//dashboard'
+    assert context.browser.current_url == 'http://www.ihatch.uk/dashboard'
     assert 'Welcome' in context.browser.page_source
 
 
