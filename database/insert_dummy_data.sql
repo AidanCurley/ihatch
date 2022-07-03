@@ -10,5 +10,3 @@ INSERT INTO sensor (user_id, is_connected) values (2, true);
 INSERT INTO sensor (user_id, is_connected) values (3, true);
 
 INSERT INTO measurement (sensor_id, date_time, temperature, humidity) values(1, "2022-07-0314:21:30", 40.2, 38.43);
-
-SELECT * FROM measurement;

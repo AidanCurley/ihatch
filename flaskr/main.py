@@ -1,17 +1,21 @@
 """Launch the application"""
-from flask import render_template
-
-from flask import Flask, request, jsonify, make_response, Response
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
+from flask import Flask, request, jsonify, make_response, Response, render_template
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import CSRFProtect
 
 load_dotenv()
 
 app = Flask(__name__)
+
+# csrf = CSRFProtect()
+# csrf.init_app(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
+app.config['WTF_CSRF_SECRET_KEY'] = os.getenv("WTF_CSRF_SECRET_KEY")
 db = SQLAlchemy(app)
 
 
@@ -184,7 +188,7 @@ class Weight(db.Model):
         return {
             'id': self.id,
             'egg_id': self.egg_id,
-            'date': self.date_time,
+            'date_time': self.date_time,
             'weight': self.weight
         }
 
@@ -283,6 +287,95 @@ def log_measurement():
                                       temperature=data['temperature'],
                                       humidity=data['humidity'])
             measurement.create()
+            api_response: Response = make_response({'Status': 'OK'})
+            return api_response
+
+        except ValueError:
+            return make_response({'Error': 'Bad data'})
+
+    return make_response({'Error': request.json}, 200)
+
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    """Creates a new user"""
+    data = request.json
+
+    if all(field in data for field in ['name', 'surname', 'dob', 'email', 'hash']):
+
+        try:
+            user = User(name=data['name'],
+                        surname=data['surname'],
+                        dob=data['dob'],
+                        email=data['email'],
+                        hash=data['hash'])
+            user.create()
+            api_response: Response = make_response({'Status': 'OK'})
+            return api_response
+
+        except ValueError:
+            return make_response({'Error': 'Bad data'})
+
+    return make_response({'Error': request.json}, 200)
+
+
+@app.route('/create_hatch', methods=['POST'])
+def create_hatch():
+    """Creates a new hatch"""
+    data = request.json
+
+    if all(field in data for field in ['user_id', 'sensor_id', 'start_date', 'is_active']):
+
+        try:
+            hatch = Hatch(user_id=data['user_id'],
+                          sensor_id=data['sensor_id'],
+                          start_date=data['start_date'],
+                          is_active=data['is_active'])
+            hatch.create()
+            api_response: Response = make_response({'Status': 'OK'})
+            return api_response
+
+        except ValueError:
+            return make_response({'Error': 'Bad data'})
+
+    return make_response({'Error': request.json}, 200)
+
+
+@app.route('/create_egg', methods=['POST'])
+def create_egg():
+    """Creates a new egg"""
+    data = request.json
+
+    if all(field in data for field in ['hatch_id', 'start_date']):
+
+        try:
+            egg = Egg(hatch_id=data['hatch_id'],
+                      start_date=data['start_date'],
+                      end_date=None,
+                      hatched=False)
+
+            egg.create()
+            api_response: Response = make_response({'Status': 'OK'})
+            return api_response
+
+        except ValueError:
+            return make_response({'Error': 'Bad data'})
+
+    return make_response({'Error': request.json}, 200)
+
+
+@app.route('/create_weight', methods=['POST'])
+def create_weight():
+    """Creates a new weight entry"""
+    data = request.json
+
+    if all(field in data for field in ['egg_id', 'date_time', 'weight']):
+
+        try:
+            weight = Weight(egg_id=data['egg_id'],
+                            date_time=data['date_time'],
+                            weight=data['weight'])
+            weight.create()
             api_response: Response = make_response({'Status': 'OK'})
             return api_response
 
