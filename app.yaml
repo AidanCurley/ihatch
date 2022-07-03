@@ -1,8 +1,0 @@
-#app.yaml
-runtime: python39
-
-env_variables:
-  CLOUD_SQL_USERNAME: root
-  CLOUD_SQL_PASSWORD: X5ojp3%YPKr>@DdF
-  CLOUD_SQL_DATABASE_NAME: ihatch
-  CLOUD_SQL_CONNECTION_NAME: utility-encoder-352607:europe-west1:ihatch
