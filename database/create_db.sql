@@ -1,7 +1,15 @@
-
+drop database ihatch;
 create database IF NOT EXISTS ihatch;
 use ihatch;
-show tables;
+
+drop table IF EXISTS weight;
+drop table IF EXISTS egg;
+
+drop table IF EXISTS measurement;
+drop table IF EXISTS hatch;
+
+drop table IF EXISTS sensor;
+drop table IF EXISTS user;
 
 create table IF NOT EXISTS user
 (
