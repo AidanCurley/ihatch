@@ -388,6 +388,10 @@ def create_weight():
 @app.route('/delete_user/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id) -> Response:
     """Deletes a user from the database"""
+    if db.session.query(User).filter(User.id == user_id).count() == 0:
+        api_response = make_response({'Error': 'No User Found'})
+        return api_response
+
     User.query.filter(User.id == user_id).delete()
     db.session.commit()
     # Check record was successfully deleted
