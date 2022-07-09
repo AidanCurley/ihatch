@@ -64,7 +64,7 @@ class Measurement(db.Model):
     __tablename__ = "measurement"
     id = db.Column(db.Integer, primary_key=True)
     sensor_id = db.Column(db.Integer)
-    date_time = db.String(50)
+    date_time = db.Column(db.String(50))
     temperature = db.Column(db.Float)
     humidity = db.Column(db.Float)
 
@@ -95,7 +95,7 @@ class Hatch(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
     sensor_id = db.Column(db.Integer)
-    start_date = db.String(50)
+    start_date = db.Column(db.String(50))
     is_active = db.Column(db.Boolean)
 
     def create(self) -> None:
@@ -124,8 +124,8 @@ class Egg(db.Model):
     __tablename__ = "egg"
     id = db.Column(db.Integer, primary_key=True)
     hatch_id = db.Column(db.Integer)
-    start_date = db.String(50)
-    end_date = db.String(50)
+    start_date = db.Column(db.String(50))
+    end_date = db.Column(db.String(50))
     hatched = db.Column(db.Boolean)
 
     def create(self) -> None:
@@ -154,7 +154,7 @@ class Weight(db.Model):
     __tablename__ = "weight"
     id = db.Column(db.Integer, primary_key=True)
     egg_id = db.Column(db.Integer)
-    date_time = db.String(50)
+    date_time = db.Column(db.String(50))
     weight = db.Column(db.Float)
 
     def create(self) -> None:

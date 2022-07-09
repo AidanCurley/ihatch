@@ -86,7 +86,7 @@ class APIGetRequestsCase(unittest.TestCase):
 
         expected_hatch = {'Hatch': {'id': 1, 'is_active': True,
                                     'sensor_id': 1,
-                                    'start_date': 'Sat, 01 Jan 2022 00:00:00 GMT',
+                                    'start_date': '2022-01-01',
                                     'user_id': 1}}
 
         response = self.client.get('/hatch/1')
@@ -117,7 +117,7 @@ class APIGetRequestsCase(unittest.TestCase):
                                 'hatch_id': 1,
                                 'hatched': False,
                                 'id': 1,
-                                'start_date': 'Wed, 01 Jun 2022 00:00:00 GMT'}}
+                                'start_date': '2022-06-01'}}
 
         response = self.client.get('/egg/1')
 
@@ -143,7 +143,7 @@ class APIGetRequestsCase(unittest.TestCase):
             db.session.add(weight)
             db.session.commit()
 
-        expected_weight = {'Weight': {'date_time': 'Wed, 01 Jun 2022 00:00:00 GMT',
+        expected_weight = {'Weight': {'date_time': '2022-06-01 00:00:00',
                                       'egg_id': 'john',
                                       'id': 1,
                                       'weight': 12.2}}
@@ -172,7 +172,7 @@ class APIGetRequestsCase(unittest.TestCase):
             db.session.add(measurement)
             db.session.commit()
 
-        expected_measurement = {'Measurement': {'datetime': 'Wed, 01 Jun 2022 00:00:00 GMT',
+        expected_measurement = {'Measurement': {'datetime': '2022-06-01 00:00:00',
                                                 'humidity': 40.25,
                                                 'id': 1,
                                                 'sensor_id': 1,
