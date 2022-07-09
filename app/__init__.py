@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import config
 
+
 load_dotenv()
 
 
@@ -21,8 +22,5 @@ def create_app(config_name):
     config[config_name].init_app(app)
     csrf.init_app(app)
     db.init_app(app)
-
-    from .api import api as api_blueprint
-    app.register_blueprint(api_blueprint)
 
     return app

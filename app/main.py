@@ -1,11 +1,12 @@
 """Launch the application"""
+from datetime import datetime
+
 from flask import request, jsonify, make_response, Response, render_template
 
 from app import create_app, db
-from app.models import User, Sensor, Hatch, Egg, Weight
+from app.models import User, Sensor, Hatch, Egg, Weight, Measurement
 
 app = create_app('development')
-
 
 
 @app.route('/')
@@ -20,54 +21,6 @@ def get_user(user_id):
     user = User.query.get(user_id)
     if user is not None:
         api_response: Response = make_response(jsonify({'User': user.json()}), 200)
-    else:
-        api_response: Response = make_response({'Error': 'No result'}, 200)
-
-    return api_response
-
-
-@app.route('/sensor/<int:sensor_id>', methods=['GET'])
-def get_sensor(sensor_id):
-    """Gets an entry from the sensor table"""
-    sensor = Sensor.query.get(sensor_id)
-    if sensor is not None:
-        api_response: Response = make_response(jsonify({'Sensor': sensor.json()}), 200)
-    else:
-        api_response: Response = make_response({'Error': 'No result'}, 200)
-
-    return api_response
-
-
-@app.route('/hatch/<int:hatch_id>', methods=['GET'])
-def get_hatch(hatch_id):
-    """Gets an entry from the hatch table"""
-    hatch = Hatch.query.get(hatch_id)
-    if hatch is not None:
-        api_response: Response = make_response(jsonify({'Hatch': hatch.json()}), 200)
-    else:
-        api_response: Response = make_response({'Error': 'No result'}, 200)
-
-    return api_response
-
-
-@app.route('/egg/<int:egg_id>', methods=['GET'])
-def get_egg(egg_id):
-    """Gets an entry from the egg table"""
-    egg = Egg.query.get(egg_id)
-    if egg is not None:
-        api_response: Response = make_response(jsonify({'Egg': egg.json()}), 200)
-    else:
-        api_response: Response = make_response({'Error': 'No result'}, 200)
-
-    return api_response
-
-
-@app.route('/weight/<int:weight_id>', methods=['GET'])
-def get_weight(weight_id):
-    """Gets an entry from the weight table"""
-    weight = Weight.query.get(weight_id)
-    if weight is not None:
-        api_response: Response = make_response(jsonify({'Weight': weight.json()}), 200)
     else:
         api_response: Response = make_response({'Error': 'No result'}, 200)
 
@@ -97,6 +50,36 @@ def create_user():
     return make_response({'Error': request.json}, 200)
 
 
+@app.route('/delete_user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id) -> Response:
+    """Deletes a user from the database"""
+    if db.session.query(User).filter(User.id == user_id).count() == 0:
+        api_response = make_response({'Error': 'No User Found'})
+        return api_response
+
+    User.query.filter(User.id == user_id).delete()
+    db.session.commit()
+    # Check record was successfully deleted
+    if db.session.query(User).filter(User.id == user_id).count() == 0:
+        api_response = make_response({'Status': 'OK, User ' + str(user_id) + ' deleted'})
+    else:
+        api_response = make_response({'Status': 'Transaction Error'})
+
+    return api_response
+
+
+@app.route('/hatch/<int:hatch_id>', methods=['GET'])
+def get_hatch(hatch_id):
+    """Gets an entry from the hatch table"""
+    hatch = Hatch.query.get(hatch_id)
+    if hatch is not None:
+        api_response: Response = make_response(jsonify({'Hatch': hatch.json()}), 200)
+    else:
+        api_response: Response = make_response({'Error': 'No result'}, 200)
+
+    return api_response
+
+
 @app.route('/create_hatch', methods=['POST'])
 def create_hatch():
     """Creates a new hatch"""
@@ -117,6 +100,18 @@ def create_hatch():
             return make_response({'Error': 'Bad data'})
 
     return make_response({'Error': request.json}, 200)
+
+
+@app.route('/egg/<int:egg_id>', methods=['GET'])
+def get_egg(egg_id):
+    """Gets an entry from the egg table"""
+    egg = Egg.query.get(egg_id)
+    if egg is not None:
+        api_response: Response = make_response(jsonify({'Egg': egg.json()}), 200)
+    else:
+        api_response: Response = make_response({'Error': 'No result'}, 200)
+
+    return api_response
 
 
 @app.route('/create_egg', methods=['POST'])
@@ -142,8 +137,20 @@ def create_egg():
     return make_response({'Error': request.json}, 200)
 
 
-@app.route('/create_weight', methods=['POST'])
-def create_weight():
+@app.route('/weight/<int:weight_id>', methods=['GET'])
+def get_weight(weight_id):
+    """Gets an entry from the weight table"""
+    weight = Weight.query.get(weight_id)
+    if weight is not None:
+        api_response: Response = make_response(jsonify({'Weight': weight.json()}), 200)
+    else:
+        api_response: Response = make_response({'Error': 'No result'}, 200)
+
+    return api_response
+
+
+@app.route('/log_weight', methods=['POST'])
+def log_weight():
     """Creates a new weight entry"""
     data = request.json
 
@@ -163,23 +170,51 @@ def create_weight():
     return make_response({'Error': request.json}, 200)
 
 
-@app.route('/delete_user/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id) -> Response:
-    """Deletes a user from the database"""
-    if db.session.query(User).filter(User.id == user_id).count() == 0:
-        api_response = make_response({'Error': 'No User Found'})
-        return api_response
-
-    User.query.filter(User.id == user_id).delete()
-    db.session.commit()
-    # Check record was successfully deleted
-    if db.session.query(User).filter(User.id == user_id).count() == 0:
-        api_response = make_response({'Status': 'OK, User ' + str(user_id) + ' deleted'})
+@app.route('/measurement/<int:measurement_id>', methods=['GET'])
+def get_measurement(measurement_id):
+    """Gets an entry from the measurement table"""
+    measurement = Measurement.query.get(measurement_id)
+    if measurement is not None:
+        api_response: Response = make_response(jsonify({'Measurement': measurement.json()}), 200)
     else:
-        api_response = make_response({'Status': 'Transaction Error'})
+        api_response: Response = make_response({'Error': 'No result'}, 200)
+
+    return api_response
+
+
+@app.route('/log_measurement', methods=['POST'])
+def log_measurement():
+    """Logs a new reading from a sensor"""
+    data = request.json
+
+    if all(field in data for field in ['sensor_id', 'date_time', 'temperature', 'humidity']):
+
+        try:
+            measurement = Measurement(sensor_id=data['sensor_id'],
+                                      date_time=datetime.strptime(data['date_time'], '%Y-%m-%dT%H:%M:%S'),
+                                      temperature=data['temperature'],
+                                      humidity=data['humidity'])
+            measurement.create()
+            api_response: Response = make_response({'Status': 'OK'})
+            return api_response
+
+        except ValueError:
+            return make_response({'Error': 'Bad data'})
+
+    return make_response({'Error': request.json}, 200)
+
+
+@app.route('/sensor/<int:sensor_id>', methods=['GET'])
+def get_sensor(sensor_id):
+    """Gets an entry from the sensor table"""
+    sensor = Sensor.query.get(sensor_id)
+    if sensor is not None:
+        api_response: Response = make_response(jsonify({'Sensor': sensor.json()}), 200)
+    else:
+        api_response: Response = make_response({'Error': 'No result'}, 200)
 
     return api_response
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
