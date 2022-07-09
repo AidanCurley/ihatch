@@ -182,7 +182,7 @@ def log_measurement():
 
         try:
             measurement = Measurement(sensor_id=data['sensor_id'],
-                                      date_time=datetime.strptime(data['date_time'], '%Y-%m-%dT%H:%M:%S'),
+                                      date_time=data['date_time'],
                                       temperature=data['temperature'],
                                       humidity=data['humidity'])
             measurement.create()

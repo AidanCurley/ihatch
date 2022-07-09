@@ -30,7 +30,7 @@ class APIGetRequestsCase(unittest.TestCase):
             db.session.add(user)
             db.session.commit()
 
-        expected_user = {'User': {'dob': 'Wed, 01 Jun 2005 00:00:00 GMT',
+        expected_user = {'User': {'dob': '2005-06-01',
                                   'email': 'john@example.com', 'hash': '123456',
                                   'id': 1, 'name': 'john', 'surname': 'smith'}}
         # issue a request
