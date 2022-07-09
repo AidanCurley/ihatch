@@ -4,7 +4,7 @@ from behave import given, when, then
 
 # pylint: disable=missing-function-docstring
 # pylint: disable=function-redefined
-from flaskr.constants.messages import INCORRECT_DETAILS
+from app.constants.messages import INCORRECT_DETAILS
 
 
 @given('the user is on the main landing page')
