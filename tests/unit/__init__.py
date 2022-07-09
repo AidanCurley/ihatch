@@ -5,7 +5,7 @@ Creates an app for testing that has the configuration flag TESTING set to True.
 
 import pytest
 
-from flaskr.main import app
+from app.main import app
 
 
 @pytest.fixture

@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-from flaskr.main import app
+from app.main import app
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
