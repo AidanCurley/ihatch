@@ -4,7 +4,6 @@ from flask import Flask
 from flask_wtf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 
-
 from config import config
 
 

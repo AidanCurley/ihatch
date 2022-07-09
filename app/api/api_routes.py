@@ -32,7 +32,7 @@ def create_user():
                         email=data['email'],
                         hash=data['hash'])
             user.create()
-            api_response: Response = make_response({'Status': 'OK'})
+            api_response: Response = make_response({'Status': 'OK'}, 200)
             return api_response
 
         except ValueError:
