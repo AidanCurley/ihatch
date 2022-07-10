@@ -2,7 +2,7 @@ import unittest
 from datetime import date, datetime
 
 from app import create_app, db
-from app.models import User, Sensor, Egg, Hatch, Weight, Measurement
+from app.models import User, Egg, Hatch, Weight, Measurement
 
 
 class APIPostRequestsCase(unittest.TestCase):
@@ -38,6 +38,10 @@ class APIPostRequestsCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'Status': 'OK'})
 
+        # Check that user has been inserted in the database
+        with self.app.app_context():
+            self.assertEqual(db.session.query(User).filter(User.email == "billy@friendless.com").count(), 1)
+
     def test_create_hatch_with_valid_parameters(self):
         with self.app.app_context():
             hatch = Hatch(user_id=1, sensor_id=1, is_active=True, start_date=date(2022, 1, 1))
@@ -52,6 +56,10 @@ class APIPostRequestsCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'Status': 'OK'})
 
+        # Check that hatch has been inserted in the database
+        with self.app.app_context():
+            self.assertEqual(db.session.query(Hatch).filter(Hatch.start_date == 'Sat, 01 Jan 2022 00:00:00 GMT').count(), 1)
+
     def test_create_egg_with_valid_parameters(self):
         with self.app.app_context():
             egg = Egg(hatch_id=1, start_date=date(2022, 6, 1), end_date=None, hatched=False)
@@ -65,6 +73,10 @@ class APIPostRequestsCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'Status': 'OK'})
 
+        # Check that egg has been inserted in the database
+        with self.app.app_context():
+            self.assertEqual(db.session.query(Egg).filter(Egg.start_date == 'Wed, 01 Jun 2022 00:00:00 GMT').count(), 1)
+
     def test_log_weight_with_valid_parameters(self):
         with self.app.app_context():
             weight = Weight(egg_id='john', date_time=datetime(2022, 6, 1), weight=12.2)
@@ -76,6 +88,10 @@ class APIPostRequestsCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'Status': 'OK'})
+
+        # Check that weight has been inserted in the database
+        with self.app.app_context():
+            self.assertEqual(db.session.query(Weight).filter(Weight.date_time == 'Wed, 01 Jun 2022 00:00:00 GMT').count(), 1)
 
     def test_log_measurement_with_valid_parameters(self):
         with self.app.app_context():
@@ -90,3 +106,7 @@ class APIPostRequestsCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'Status': 'OK'})
+
+        # Check that measurement has been inserted in the database
+        with self.app.app_context():
+            self.assertEqual(db.session.query(Measurement).filter(Measurement.date_time == '2022-07-07T15:09:30').count(), 1)
