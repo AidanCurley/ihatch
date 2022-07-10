@@ -163,9 +163,6 @@ class APIPostRequestsCase(unittest.TestCase):
                                                          'weight': 12.2}})
 
     def test_log_measurement_with_missing_parameter_returns_error(self):
-        with self.app.app_context():
-            measurement = Measurement(sensor_id=1, date_time=datetime(2022, 6, 1), temperature=12.2, humidity=40.25)
-
         response = self.client.post('/log_measurement', json={
             "sensor_id": 3,
             "temperature": 41.3,
