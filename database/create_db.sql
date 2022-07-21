@@ -1,4 +1,4 @@
-drop database ihatch;
+-- drop database ihatch;
 create database IF NOT EXISTS ihatch;
 use ihatch;
 
