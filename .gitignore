@@ -2,3 +2,4 @@ tests/accessibility/.pytest_cache
 tests/accessibility/results.json
 .env
 app.yaml
+.idea/

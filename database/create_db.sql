@@ -1,4 +1,4 @@
-drop database ihatch;
+-- drop database ihatch;
 create database IF NOT EXISTS ihatch;
 use ihatch;
 
@@ -67,3 +67,6 @@ create table IF NOT EXISTS weight
     weight      float,
     FOREIGN KEY (egg_id) REFERENCES egg(id)
 );
+
+GRANT ALL PRIVILEGES on ihatch.* to `ihatch-api-user`;
+FLUSH PRIVILEGES;

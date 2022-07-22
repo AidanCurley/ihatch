@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+        - ./database/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+        - ./database/insert_dummy_data.sql:/docker-entrypoint-initdb.d/insert_dummy_data.sql
+        - ./db:/var/lib/mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_USER: ${DB_APPLICATION_USER}
+      MARIADB_PASSWORD: ${DB_APPLICATION_USER_PASSWORD}
+    ports:
+        - "3306:3306"
+    command: --innodb-flush-method=fsync --innodb-use-native-aio=0
+
+  app:
+    image: acurley/ihatch:1.0
+    environment:
+      DATABASE: mysql://${DB_APPLICATION_USER}:${DB_APPLICATION_USER_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    depends_on:
+      - db
+
