@@ -63,21 +63,21 @@ class Sensor(db.Model):
 class Measurement(db.Model):
     __tablename__ = "measurement"
     id = db.Column(db.Integer, primary_key=True)
-    sensor_id = db.Column(db.Integer)
+    sensor_id = db.Column(db.String(20))
     date_time = db.Column(db.String(50))
-    temperature = db.Column(db.Float)
-    humidity = db.Column(db.Float)
+    type = db.Column(db.String(50))
+    measurement = db.Column(db.Float)
 
     def create(self) -> None:
         db.session.add(self)
         db.session.commit()
         return self
 
-    def __init__(self, sensor_id, date_time, temperature, humidity):
+    def __init__(self, sensor_id, date_time, type, measurement):
         self.sensor_id = sensor_id
         self.date_time = date_time
-        self.temperature = temperature
-        self.humidity = humidity
+        self.type = type
+        self.measurement = measurement
 
     def json(self) -> dict:
         """return JSON formatted data"""
@@ -85,8 +85,8 @@ class Measurement(db.Model):
             'id': self.id,
             'sensor_id': self.sensor_id,
             'datetime': self.date_time,
-            'temperature': self.temperature,
-            'humidity': self.humidity
+            'type': self.type,
+            'measurement': self.measurement
         }
 
 

@@ -8,12 +8,12 @@
 
 
 #define uS_TO_S_FACTOR 1000000
-#define TIME_TO_SLEEP  900
+#define TIME_TO_SLEEP  10
 
 RTC_DATA_ATTR const char* ssid = "Rampage";
 RTC_DATA_ATTR const char* password = "Z0Ybuguv123";
-RTC_DATA_ATTR String temp_url = "http://51.142.124.189:5000/log_temperature";
-RTC_DATA_ATTR String humidity_url = "http://51.142.124.189:5000/log_humidity";
+RTC_DATA_ATTR String url = "http://51.142.124.189:5000/log_measurement";
+
 
 RTC_DATA_ATTR String sensorId = "testing";
 
@@ -40,7 +40,6 @@ String getTimeStamp(){
 }
 
 void setup() {
-  Serial.begin(9600);
   dht.begin();
   WiFi.begin(ssid, password);
 
@@ -67,11 +66,11 @@ void setup() {
         WiFiClient client;
         HTTPClient http;
 
-        http.begin(client, temp_url);
+        http.begin(client, url);
 
         http.addHeader("Content-Type", "application/json");
 
-        responseCode = http.POST("{\"sensor_id\":\"" + sensorId + "\",\"date_time\":\"" + getTimeStamp() + "\",\"temperature\":\"" + currentTemperature + "\"}");
+        responseCode = http.POST("{\"sensor_id\":\"" + sensorId + "\",\"date_time\":\"" + getTimeStamp() + "\",\"type\":\"temperature\", \"measurement\":\"" + currentTemperature + "\"}");
 
         lastTemperature = currentTemperature;
         http.end();
@@ -81,11 +80,11 @@ void setup() {
         WiFiClient client;
         HTTPClient http;
 
-        http.begin(client, humidity_url);
+        http.begin(client, url);
 
         http.addHeader("Content-Type", "application/json");
 
-        responseCode = http.POST("{\"sensor_id\":\"" + sensorId + "\",\"date_time\":\"" + getTimeStamp() + "\",\"humidity\":\"" + currentHumidity + "\"}");
+        responseCode = http.POST("{\"sensor_id\":\"" + sensorId + "\",\"date_time\":\"" + getTimeStamp() + "\",\"type\":\"humidity\", \"measurement\":\"" + currentHumidity + "\"}");
 
         lastHumidity = currentHumidity;
         http.end();
