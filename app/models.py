@@ -63,7 +63,7 @@ class Sensor(db.Model):
 class Measurement(db.Model):
     __tablename__ = "measurement"
     id = db.Column(db.Integer, primary_key=True)
-    sensor_id = db.Column(db.String(20))
+    sensor_id = db.Column(db.Integer)
     date_time = db.Column(db.String(50))
     type = db.Column(db.String(50))
     measurement = db.Column(db.Float)

@@ -15,7 +15,7 @@ RTC_DATA_ATTR const char* password = "Z0Ybuguv123";
 RTC_DATA_ATTR String url = "http://51.142.124.189:5000/log_measurement";
 
 
-RTC_DATA_ATTR String sensorId = "testing";
+RTC_DATA_ATTR String sensorId = "9";
 
 RTC_DATA_ATTR const char* ntp = "pool.ntp.org";
 RTC_DATA_ATTR long gmtOffset = 0;
