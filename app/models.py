@@ -65,7 +65,7 @@ class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sensor_id = db.Column(db.Integer)
     date_time = db.Column(db.String(50))
-    type = db.Column(db.String(50))
+    m_type = db.Column(db.String(50))
     measurement = db.Column(db.Float)
 
     def create(self) -> None:
@@ -73,10 +73,10 @@ class Measurement(db.Model):
         db.session.commit()
         return self
 
-    def __init__(self, sensor_id, date_time, type, measurement):
+    def __init__(self, sensor_id, date_time, m_type, measurement):
         self.sensor_id = sensor_id
         self.date_time = date_time
-        self.type = type
+        self.m_type = m_type
         self.measurement = measurement
 
     def json(self) -> dict:
@@ -85,7 +85,7 @@ class Measurement(db.Model):
             'id': self.id,
             'sensor_id': self.sensor_id,
             'datetime': self.date_time,
-            'type': self.type,
+            'm_type': self.m_type,
             'measurement': self.measurement
         }
 
