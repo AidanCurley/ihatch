@@ -12,7 +12,8 @@
 
 RTC_DATA_ATTR const char* ssid = "Rampage";
 RTC_DATA_ATTR const char* password = "Z0Ybuguv123";
-RTC_DATA_ATTR String url = "http://51.142.124.189:5000/log_measurement";
+RTC_DATA_ATTR String temp_url = "http://51.142.124.189:5000/log_temperature";
+RTC_DATA_ATTR String humidity_url = "http://51.142.124.189:5000/log_humidity";
 
 RTC_DATA_ATTR String sensorId = "testing";
 
@@ -66,7 +67,7 @@ void setup() {
         WiFiClient client;
         HTTPClient http;
 
-        http.begin(client, url);
+        http.begin(client, temp_url);
 
         http.addHeader("Content-Type", "application/json");
 
@@ -80,7 +81,7 @@ void setup() {
         WiFiClient client;
         HTTPClient http;
 
-        http.begin(client, url);
+        http.begin(client, humidity_url);
 
         http.addHeader("Content-Type", "application/json");
 
