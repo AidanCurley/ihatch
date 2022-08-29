@@ -18,7 +18,10 @@ services:
     command: --innodb-flush-method=fsync --innodb-use-native-aio=0
 
   app:
-    image: acurley/ihatch:2.0
+
+    image: acurley/ihatch:2.1
+    restart: always
+
     environment:
       DATABASE: mysql://${DB_APPLICATION_USER}:${DB_APPLICATION_USER_PASSWORD}@db:${DB_PORT}/${DB_NAME}
     ports:
@@ -27,4 +30,3 @@ services:
       - "5000"
     depends_on:
       - db
-
