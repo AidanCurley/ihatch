@@ -9,4 +9,4 @@ INSERT INTO sensor (user_id, is_connected) values (1, true);
 INSERT INTO sensor (user_id, is_connected) values (2, true);
 INSERT INTO sensor (user_id, is_connected) values (3, true);
 
-INSERT INTO measurement (sensor_id, date_time, temperature, humidity) values(1, "2022-07-0314:21:30", 40.2, 38.43);
+INSERT INTO measurement (sensor_id, date_time, m_type, measurement) values(1, "2022-07-0314:21:30", "humidity", 38.43);
