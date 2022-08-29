@@ -44,8 +44,8 @@ create table IF NOT EXISTS measurement
     id          int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     sensor_id   int,
     date_time   varchar(50),
-    m_type
-    humidity    float,
+    m_type      varchar(20),
+    measurement    float,
     FOREIGN KEY (sensor_id) REFERENCES sensor(id)
 );
 
