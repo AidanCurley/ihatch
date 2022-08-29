@@ -19,6 +19,7 @@ services:
 
   app:
     image: acurley/ihatch:2.1
+    restart: always
     environment:
       DATABASE: mysql://${DB_APPLICATION_USER}:${DB_APPLICATION_USER_PASSWORD}@db:${DB_PORT}/${DB_NAME}
     ports:

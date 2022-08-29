@@ -77,7 +77,7 @@ class Measurement(db.Model):
         self.sensor_id = sensor_id
         self.date_time = date_time
         self.m_type = m_type
-        self.humidity = humidity
+        self.measurement = measurement
 
     def json(self) -> dict:
         """return JSON formatted data"""
