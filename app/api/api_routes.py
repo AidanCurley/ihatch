@@ -180,13 +180,13 @@ def log_measurement():
     """Logs a new reading from a sensor"""
     data = request.json
 
-    if all(field in data for field in ['sensor_id', 'date_time', 'temperature', 'humidity']):
+    if all(field in data for field in ['sensor_id', 'date_time', 'm_type', 'measurement']):
 
         try:
             measurement = Measurement(sensor_id=data['sensor_id'],
                                       date_time=data['date_time'],
-                                      temperature=data['temperature'],
-                                      humidity=data['humidity'])
+                                      m_type=data['m_type'],
+                                      measurement=data['measurement'])
             measurement.create()
             api_response: Response = make_response({'Status': 'OK'})
             return api_response
