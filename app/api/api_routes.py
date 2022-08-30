@@ -179,22 +179,27 @@ def get_measurement(measurement_id):
 def log_measurement():
     """Logs a new reading from a sensor"""
     data = request.json
+    successful = False
+    for item in data:
+        return make_response({'It is wrong': item}, 200)
+        # if all(field in item for field in ['sensor_id', 'date_time', 'm_type', 'measurement']):
+        #     try:
+        #         measurement = Measurement(sensor_id=item['sensor_id'],
+        #                                   date_time=item['date_time'],
+        #                                   m_type=item['m_type'],
+        #                                   measurement=item['measurement'])
+        #         measurement.create()
+        #         successful = True
+        #     except ValueError:
+        #         return make_response({'Error': 'Bad data'}, 199)
+        # else:
+        #     return make_response({'Error': item}, 200)
 
-    if all(field in data for field in ['sensor_id', 'date_time', 'm_type', 'measurement']):
+    if successful:
+        api_response: Response = make_response({'Status': 'OK'}, 200)
+        return api_response
 
-        try:
-            measurement = Measurement(sensor_id=data['sensor_id'],
-                                      date_time=data['date_time'],
-                                      m_type=data['m_type'],
-                                      measurement=data['measurement'])
-            measurement.create()
-            api_response: Response = make_response({'Status': 'OK'})
-            return api_response
 
-        except ValueError:
-            return make_response({'Error': 'Bad data'})
-
-    return make_response({'Error': request.json}, 200)
 
 
 @api_bp.route('/sensor/<int:sensor_id>', methods=['GET'])

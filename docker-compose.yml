@@ -19,7 +19,7 @@ services:
 
   app:
 
-    image: acurley/ihatch:2.1
+    image: acurley/ihatch:2.2
     restart: always
 
     environment:
