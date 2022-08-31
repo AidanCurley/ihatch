@@ -1,4 +1,5 @@
 import json
+import datetime
 
 from flask import Response, make_response, jsonify, request, Blueprint
 
@@ -180,26 +181,45 @@ def log_measurement():
     """Logs a new reading from a sensor"""
     data = request.json
 
-    for item in data:
-        print(item)
-        if all(field in item for field in ['sensor_id', 'date_time', 'm_type', 'measurement']):
+    # if json is not in senML format
+    if 'sensor_id' in data[0]:
+        for item in data:
+            if all(field in item for field in ['sensor_id', 'date_time', 'm_type', 'measurement']):
+                try:
+                    measurement = Measurement(sensor_id=item['sensor_id'],
+                                              date_time=item['date_time'],
+                                              m_type=item['m_type'],
+                                              measurement=item['measurement'])
+                    measurement.create()
+
+                except ValueError:
+                    return make_response({'Error': 'Bad data'}, 199)
+            else:
+                return make_response({'Error': data}, 200)
+
+        api_response: Response = make_response({'Status': 'OK'}, 200)
+        return api_response
+
+    # if data is in senML format
+    if 'bn' in data[0]:
+        sensor_id = data[0]['bn']
+        date_time = datetime.datetime.fromtimestamp(data[0]['bt'])
+        datetime_str = date_time.strftime("%A, %B %-d %Y %X")
+
+        # Skip first element as that contains base data
+        for item in data[1:]:
             try:
-                measurement = Measurement(sensor_id=item['sensor_id'],
-                                          date_time=item['date_time'],
-                                          m_type=item['m_type'],
-                                          measurement=item['measurement'])
+                measurement = Measurement(sensor_id=sensor_id,
+                                          date_time=datetime_str,
+                                          m_type=item['n'],
+                                          measurement=item['v'])
                 measurement.create()
 
             except ValueError:
                 return make_response({'Error': 'Bad data'}, 199)
-        else:
-            return make_response({'Error': data}, 200)
 
-
-    api_response: Response = make_response({'Status': 'OK'}, 200)
-    return api_response
-
-
+        api_response: Response = make_response({'Status': 'OK'}, 200)
+        return api_response
 
 
 @api_bp.route('/sensor/<int:sensor_id>', methods=['GET'])
