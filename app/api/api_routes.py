@@ -220,7 +220,7 @@ def log_measurement():
             try:
                 measurement = Measurement(sensor_id=sensor_id,
                                           date_time=datetime_str,
-                                          m_type=item['n'],
+                                          m_type=m_type,
                                           measurement=item['v'])
                 measurement.create()
 
@@ -229,6 +229,8 @@ def log_measurement():
 
         api_response: Response = make_response({'Status': 'OK'}, 200)
         return api_response
+
+    return make_response({'Error': data}, 200)
 
 
 @api_bp.route('/sensor/<int:sensor_id>', methods=['GET'])
