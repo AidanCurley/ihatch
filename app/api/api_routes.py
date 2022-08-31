@@ -208,6 +208,15 @@ def log_measurement():
 
         # Skip first element as that contains base data
         for item in data[1:]:
+            # SenML format
+            if 'n' in item:
+                m_type = item['n']
+            # ThingsMl format
+            elif item['i_'] == -24:
+                m_type = "temperature"
+            elif item['i_'] == -23:
+                m_type = "humidity"
+
             try:
                 measurement = Measurement(sensor_id=sensor_id,
                                           date_time=datetime_str,
